@@ -172,6 +172,17 @@ public class StompClient {
                 Collections.singletonList(new StompHeader(StompHeader.DESTINATION, destination)),
                 data));
     }
+  public Completable send(String destination, String data,@Nullable List<StompHeader> _sendingHeaders) {
+
+  List<StompHeader> headers = new ArrayList<>();
+         headers.add(new StompHeader(StompHeader.DESTINATION, destination));
+  if (_sendingHeaders != null) headers.addAll(_sendingHeaders);
+
+        return send(new StompMessage(
+                StompCommand.SEND,
+                headers,
+                data));
+    }
 
     public Completable send(@NonNull StompMessage stompMessage) {
         Completable completable = connectionProvider.send(stompMessage.compile(legacyWhitespace));
